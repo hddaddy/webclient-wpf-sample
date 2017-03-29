@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfApp1
 {
@@ -22,9 +14,10 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Stopwatch sw = new Stopwatch();
+
         private WebClient _WebClient1;
-        private WebClient _WebClient2;
-        private WebClient _WebClient3;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,19 +26,18 @@ namespace WpfApp1
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _WebClient1 = new WebClient();
-            _WebClient1.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
-            _WebClient1.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-            _WebClient1.DownloadFileAsync(new Uri("http://akinstall.plaync.com/mxm/rc/install/20160607/MXM_RC.7z.001"), @"D:\Downloads\LauncherDownloads\TestDownload\" + "MXM_RC.7z.001");
+            _WebClient1.DownloadFileCompleted += Completed;
+            _WebClient1.DownloadProgressChanged += ProgressChanged;
+            //_WebClient1.DownloadFileAsync(new Uri("http://akinstall.plaync.com/mxm/rc/install/20160607/MXM_RC.7z.001"),
+            //    @"D:\Downloads\LauncherDownloads\TestDownload\" + "MXM_RC.7z.001");
+            sw.Reset();
+            sw.Start();
+            _WebClient1.DownloadFileAsync(new Uri("http://rc.up4rep.plaync.co.kr/INSTALL/LE_RC/LEClient.msi"),
+                @"D:\Downloads\LauncherDownloads\TestDownload\" + "LEClient.msi");
 
-            _WebClient2 = new WebClient();
-            _WebClient2.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed2);
-            _WebClient2.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged2);
-            _WebClient2.DownloadFileAsync(new Uri("http://rc.up4rep.plaync.co.kr/INSTALL/LE_RC/LEClient.msi"), @"D:\Downloads\LauncherDownloads\TestDownload\" + "LEClient.msi");
-
-            _WebClient3 = new WebClient();
-            _WebClient3.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed3);
-            _WebClient3.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged3);
-            _WebClient3.DownloadFileAsync(new Uri("http://common-ncetc.ktics.co.kr/common/RC/BNS_KOR_RC/2016120201/setup.exe"), @"D:\Downloads\LauncherDownloads\TestDownload\" + "setup.exe");
+            //_WebClient1.DownloadFileAsync(
+            //    new Uri("http://common-ncetc.ktics.co.kr/common/RC/BNS_KOR_RC/2016120201/Data19.cab"),
+            //    @"D:\Downloads\LauncherDownloads\TestDownload\" + "Data19.cab");
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -55,41 +47,53 @@ namespace WpfApp1
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
+            sw.Stop();
+            p1text.Text = sw.ElapsedMilliseconds.ToString();
+
             MessageBox.Show("Download completed!");
         }
-
-        private void ProgressChanged2(object sender, DownloadProgressChangedEventArgs e)
-        {
-            progressBar2.Value = e.ProgressPercentage;
-        }
-
-        private void Completed2(object sender, AsyncCompletedEventArgs e)
-        {
-            MessageBox.Show("Download completed!");
-        }
-
-
-        private void ProgressChanged3(object sender, DownloadProgressChangedEventArgs e)
-        {
-            progressBar3.Value = e.ProgressPercentage;
-        }
-
-        private void Completed3(object sender, AsyncCompletedEventArgs e)
-        {
-            MessageBox.Show("Download completed!");
-        }
-
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if(_WebClient1 != null)
+            if (_WebClient1 != null)
                 _WebClient1.CancelAsync();
+        }
 
-            if (_WebClient2 != null)
-                _WebClient2.CancelAsync();
+        private void HttpButton_Click(object sender, RoutedEventArgs e)
+        {
+            DownloadHttpClient("http://rc.up4rep.plaync.co.kr/INSTALL/LE_RC/LEClient.msi");
+            //HttpGetForLargeFileInWrongWay();
+        }
 
-            if (_WebClient3 != null)
-                _WebClient3.CancelAsync();
+        private async void DownloadHttpClient(string webAddress)
+        {
+            sw.Reset();
+            sw.Start();
+            //instance of HTTPClient
+            var client = new HttpClient();
+
+            //send  request asynchronously
+            var response = await client.GetAsync(webAddress);
+
+            // Check that response was successful or throw exception
+            response.EnsureSuccessStatusCode();
+
+            // Read response asynchronously and save asynchronously to file
+            using (
+                var fileStream = new FileStream(@"D:\Downloads\LauncherDownloads\TestDownload\" + "LEClient.msi",
+                    FileMode.Create, FileAccess.Write, FileShare.None)
+            )
+            {
+                //copy the content from response to filestream
+                await response.Content.CopyToAsync(fileStream);
+            }
+
+            sw.Stop();
+            p1text.Text = sw.ElapsedMilliseconds.ToString();
+        }
+
+        private void DecompressButton_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

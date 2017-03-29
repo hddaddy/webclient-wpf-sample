@@ -7,11 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button Content="Download" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="11" Margin="10,238,0,0" VerticalAlignment="Top" Width="497"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="96,213,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <ProgressBar x:Name="progressBar2" HorizontalAlignment="Left" Height="11" Margin="10,254,0,0" VerticalAlignment="Top" Width="497"/>
-        <ProgressBar x:Name="progressBar3" HorizontalAlignment="Left" Height="11" Margin="10,270,0,0" VerticalAlignment="Top" Width="497"/>
+        <Button Content="WebClient Download" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Width="122" Click="Button_Click"/>
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="20" Margin="10,238,0,0" VerticalAlignment="Top" Width="420"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="137,213,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <ProgressBar x:Name="progressBar2" HorizontalAlignment="Left" Height="20" Margin="10,263,0,0" VerticalAlignment="Top" Width="420"/>
+        <ProgressBar x:Name="progressBar3" HorizontalAlignment="Left" Height="20" Margin="10,288,0,0" VerticalAlignment="Top" Width="420"/>
+        <Button Content="HttpClient Download" HorizontalAlignment="Left" Margin="217,213,0,0" VerticalAlignment="Top" Width="122" Click="HttpButton_Click"/>
+        <Button Content="Decompress" HorizontalAlignment="Left" Margin="432,213,0,0" VerticalAlignment="Top" Width="75" Click="DecompressButton_Click"/>
+        <TextBlock x:Name="p1text" HorizontalAlignment="Left" Height="20" Margin="435,238,0,0" TextWrapping="Wrap" Text="" Background="LightGray" VerticalAlignment="Top" Width="72"/>
+        <TextBlock x:Name="p2text"  HorizontalAlignment="Left" Height="20" Margin="435,263,0,0" TextWrapping="Wrap" Text="" Background="LightGray" VerticalAlignment="Top" Width="72"/>
+        <TextBlock x:Name="p3text" HorizontalAlignment="Left" Height="20" Margin="435,288,0,0" TextWrapping="Wrap" Text="" Background="LightGray" VerticalAlignment="Top" Width="72"/>
 
     </Grid>
 </Window>
