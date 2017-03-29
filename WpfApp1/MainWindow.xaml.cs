@@ -15,6 +15,9 @@ namespace WpfApp1
     public partial class MainWindow : Window
     {
         private readonly Stopwatch sw = new Stopwatch();
+        private const string Url1 = "";
+        private const string Url2 = "";
+        private const string Url3 = "";
 
         private WebClient _WebClient1;
 
@@ -28,16 +31,15 @@ namespace WpfApp1
             _WebClient1 = new WebClient();
             _WebClient1.DownloadFileCompleted += Completed;
             _WebClient1.DownloadProgressChanged += ProgressChanged;
-            //_WebClient1.DownloadFileAsync(new Uri("http://akinstall.plaync.com/mxm/rc/install/20160607/MXM_RC.7z.001"),
-            //    @"D:\Downloads\LauncherDownloads\TestDownload\" + "MXM_RC.7z.001");
+            //_WebClient1.DownloadFileAsync(new Uri(url1),
+            //    @"D:\");
             sw.Reset();
             sw.Start();
-            _WebClient1.DownloadFileAsync(new Uri("http://rc.up4rep.plaync.co.kr/INSTALL/LE_RC/LEClient.msi"),
-                @"D:\Downloads\LauncherDownloads\TestDownload\" + "LEClient.msi");
+            _WebClient1.DownloadFileAsync(new Uri(Url2), @"D:\");
 
             //_WebClient1.DownloadFileAsync(
-            //    new Uri("http://common-ncetc.ktics.co.kr/common/RC/BNS_KOR_RC/2016120201/Data19.cab"),
-            //    @"D:\Downloads\LauncherDownloads\TestDownload\" + "Data19.cab");
+            //    new Uri("Url3"),
+            //    @"D:\");
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -61,7 +63,7 @@ namespace WpfApp1
 
         private void HttpButton_Click(object sender, RoutedEventArgs e)
         {
-            DownloadHttpClient("http://rc.up4rep.plaync.co.kr/INSTALL/LE_RC/LEClient.msi");
+            DownloadHttpClient(Url3);
             //HttpGetForLargeFileInWrongWay();
         }
 
@@ -80,7 +82,7 @@ namespace WpfApp1
 
             // Read response asynchronously and save asynchronously to file
             using (
-                var fileStream = new FileStream(@"D:\Downloads\LauncherDownloads\TestDownload\" + "LEClient.msi",
+                var fileStream = new FileStream(@"D:\",
                     FileMode.Create, FileAccess.Write, FileShare.None)
             )
             {
